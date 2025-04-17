@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+    app:
+        build: ./
+        container_name: "${APP_NAME}_app"
+        working_dir: /home/www
+        ports:
+            - '8000:8000'
+        volumes:
+            - ./:/home/www
+    mysql:
+        image: mariadb:latest
+        container_name: "${APP_NAME}_mysql"
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+        environment:
+            MYSQL_USER: ${DB_USERNAME:-user}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-password}
+            MYSQL_DATABASE: ${DB_DATABASE:-custom_telephony}
+        restart: always
+        ports:
+            - '3306:3306'
